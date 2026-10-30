@@ -1,27 +1,17 @@
-# Environment configuration
+# Local environment and secrets
 .env
 .env.*
+!.env.example
 
-# Dependencies
-/vendor/
-/node_modules/
-
-# IDE and editor
-.vscode/
-.idea/
-
-# Operating system
-.DS_Store
-Thumbs.db
-desktop.ini
+# Local database configuration
+config/database.local.php
 
 # Logs
 *.log
 
-# Temporary files
-*.tmp
-*.bak
+# Operating system files
+.DS_Store
+Thumbs.db
 
-# Local database
-*.sqlite
-*.db
+# Editor settings that are specific to a user
+.vscode/
