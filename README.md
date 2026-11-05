@@ -8,7 +8,7 @@ Aplikasi untuk mendukung pengelolaan informasi akademik.
 - Ade Putri Amanda — Peran
 - Fatika Rizki Syahada — Peran
 - Indriani Anwar — Peran
-- Oktavia Nur Rahmadani — Peran
+- Oktavia Nu Rahmadani — Peran
 
 ## Teknologi
 - PHP
