@@ -27,6 +27,32 @@ Laravel has the most extensive and thorough [documentation](https://laravel.com/
 
 In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
+You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+
+## Agentic Development
+
+Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+
+```bash
+composer require laravel/boost --dev
+
+php artisan boost:install
+```
+
+Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+
+## Contributing
+
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+
+## Code of Conduct
+
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+
+## Security Vulnerabilities
+
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
@@ -35,13 +61,23 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 # SiPintar — Sistem Terpusat Informasi & Navigasi Terpadu Akademik Responsif
 
-## Deskripsi Proyek
+## Deskripsi
 
-SiPintar adalah sistem informasi akademik berbasis web untuk membantu pengelolaan data dan informasi akademik di lingkungan sekolah. Pada sistem informasi akademik secara keseluruhan terdapat beberapa jenis pengguna (siswa, guru, staf tata usaha, dan admin).
+SiPintar merupakan sistem informasi akademik berbasis web yang dirancang untuk membantu pengelolaan data dan informasi akademik di lingkungan sekolah. Secara keseluruhan, sistem informasi akademik mencakup berbagai kebutuhan, seperti pengelolaan data siswa, data guru, kelas, nilai, serta informasi akademik lainnya. Sistem ini memiliki beberapa jenis pengguna dengan hak akses yang berbeda, antara lain siswa, guru, staf tata usaha, dan admin.
 
-Pada proyek ini, pengembangan difokuskan pada **pengelolaan nilai siswa oleh guru**. Guru login menggunakan akun yang dimiliki, lalu menambah dan mengedit nilai siswa sesuai mata pelajaran yang diampu. Data nilai disimpan ke dalam basis data.
+Dalam proyek ini, perancangan SiPintar difokuskan pada pengelolaan nilai siswa oleh guru. Guru dapat masuk ke dalam sistem menggunakan akun yang telah dimiliki, kemudian mengakses fitur untuk menambah dan mengedit nilai siswa sesuai dengan kelas dan mata pelajaran yang diampu. Setiap proses dilakukan melalui antarmuka sistem dan melibatkan penyimpanan data nilai ke dalam basis data.
 
-Perancangan sistem didokumentasikan dalam dokumen Deskripsi Perancangan Perangkat Lunak (DPPL/SDD) versi 1.0 yang disusun sebagai acuan pengembangan.
+Dokumen Deskripsi Perancangan Perangkat Lunak (DPPL/SDD) disusun sebagai acuan dalam proses pengembangan SiPintar, khususnya untuk menggambarkan rancangan sistem, alur kerja, struktur data, dan antarmuka pengguna.
+
+## Anggota Tim
+
+| No. | NIM | Nama | Peran/Tugas Perancangan |
+|---|---|---|---|
+| 1 | 10251118 | Vanessa Marie Tandiarru | Arsitektur Sistem Perangkat Lunak dan Class Diagram. |
+| 2 | 10241002 | Ade Putri Amanda | Definisi, Akronim, dan Singkatan; Kamus Data; Matriks Keterunutan. |
+| 3 | 10241030 | Fatika Rizki Syahada | Tujuan Penulisan dan Lingkup Masalah; Peta Navigasi (UI Flow); Mockup/Wireframe. |
+| 4 | 10241036 | Indriani Anwar | Rancangan Lingkungan Implementasi; Sequence Diagram; Entity Relationship Diagram. |
+| 5 | 10241060 | Oktavia Nur Rahmadani | Aturan Penomoran dan Penamaan; Referensi; Activity Diagram. |
 
 ## Fitur
 
@@ -62,6 +98,15 @@ Proyek ini **tidak** mencakup pengelolaan data siswa secara keseluruhan, pengelo
 | UI-003 | Form Tambah Nilai | Mengisi satu nilai untuk siswa yang belum memiliki nilai. |
 | UI-004 | Form Edit Nilai | Mengubah nilai siswa yang sudah tersimpan. |
 
+## Arsitektur Sistem
+
+Sistem terdiri dari empat lapisan:
+
+1. **Presentation Layer**: halaman React (Login, Input Nilai, Update Nilai) yang diakses guru lewat browser.
+2. **Application Layer**: Laravel di Apache (Laragon), berisi routing, middleware autentikasi, `AuthController`, dan `NilaiController` (`index`, `store`, `update`).
+3. **Persistence Layer**: Eloquent ORM Models (User, Siswa, Nilai, MataPelajaran) beserta validasi form.
+4. **Data Layer**: database MySQL `sipintar_db`.
+
 ## Teknologi
 
 | Teknologi | Kegunaan |
@@ -69,20 +114,15 @@ Proyek ini **tidak** mencakup pengelolaan data siswa secara keseluruhan, pengelo
 | PHP dan Laravel 12 | Pengembangan sisi server dan pengolahan data. |
 | JavaScript dan React JS | Antarmuka pengguna yang interaktif. |
 | MySQL | Basis data (`sipintar_db`). |
-| Windows 10/11 | Sistem operasi lingkungan pengembangan. |
+| Laragon | Lingkungan pengembangan lokal (Apache dan MySQL). |
 | Visual Studio Code | Editor kode. |
 | Git dan GitHub | Pengelolaan versi dan kolaborasi. |
-| Laragon | Lingkungan pengembangan lokal (Apache dan MySQL). |
 | Google Chrome dan Microsoft Edge | Pengujian aplikasi. |
 
-## Arsitektur Sistem
+## Struktur Dokumentasi
 
-Sistem terdiri dari empat lapisan:
-
-1. **Presentation Layer** — halaman React (Login, Input Nilai, Update Nilai) yang diakses guru lewat browser.
-2. **Application Layer** — Laravel di Apache (Laragon), berisi routing, middleware autentikasi, `AuthController`, dan `NilaiController` (`index`, `store`, `update`).
-3. **Persistence Layer** — Eloquent ORM Models (User, Siswa, Nilai, MataPelajaran) beserta validasi form.
-4. **Data Layer** — database MySQL `sipintar_db`.
+- `docs/SDD`: dokumen desain perangkat lunak (DPPL/SDD)
+- `docs/STD`: dokumen pengujian perangkat lunak
 
 ## Struktur Basis Data
 
@@ -95,56 +135,30 @@ Sistem terdiri dari empat lapisan:
 
 Relasi: Guru 1:M Mata Pelajaran, Siswa 1:M Siswa_Mata_Pelajaran, Mata Pelajaran 1:M Siswa_Mata_Pelajaran.
 
-## Struktur Dokumentasi
-
-- `docs/SDD/` — dokumen Deskripsi Perancangan Perangkat Lunak (DPPL/SDD).
-- `docs/STD/` — disiapkan untuk dokumen pengujian perangkat lunak.
-
-## Cara Menjalankan Proyek
-
-Pastikan PHP 8.2+, Composer, Node.js, dan MySQL (Laragon) sudah terpasang.
+## Persiapan
 
 1. Clone repository:
    ```bash
    git clone https://github.com/Vexusian/SiPintar.git
    cd SiPintar
    ```
-2. Install dependensi:
+2. Siapkan web server dan database lokal (Laragon).
+3. Buat database MySQL bernama `sipintar_db`.
+4. Install dependensi dan siapkan konfigurasi:
    ```bash
    composer install
    npm install
-   ```
-3. Salin file environment dan buat app key:
-   ```bash
    copy .env.example .env
    php artisan key:generate
    ```
-4. Buat database MySQL bernama `sipintar_db`, lalu sesuaikan `DB_DATABASE`, `DB_USERNAME`, dan `DB_PASSWORD` di file `.env`.
-5. Jalankan migrasi:
+5. Sesuaikan konfigurasi database lokal (`DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`) di file `.env`.
+6. Jalankan migrasi dan aplikasi:
    ```bash
    php artisan migrate
-   ```
-6. Jalankan aplikasi:
-   ```bash
    php artisan serve
    npm run dev
    ```
-7. Buka `http://localhost:8000` di browser.
 
-## Project Progress
+## Catatan
 
-- [x] DPPL/SDD v1.0 selesai disusun
-- [ ] Implementasi Login Guru
-- [ ] Implementasi Menambah Nilai Siswa
-- [ ] Implementasi Mengedit Nilai Siswa
-- [ ] Pengujian (STD)
-
-## Anggota Tim
-
-| No. | NIM | Nama | Tugas Perancangan |
-|---|---|---|---|
-| 1 | 10251118 | Vanessa Marie Tandiarru | Arsitektur Sistem Perangkat Lunak dan Class Diagram. |
-| 2 | 10241002 | Ade Putri Amanda | Definisi, Akronim, dan Singkatan; Kamus Data; Matriks Keterunutan. |
-| 3 | 10241030 | Fatika Rizki Syahada | Tujuan Penulisan dan Lingkup Masalah; Peta Navigasi (UI Flow); Mockup/Wireframe. |
-| 4 | 10241036 | Indriani Anwar | Rancangan Lingkungan Implementasi; Sequence Diagram; Entity Relationship Diagram. |
-| 5 | 10241060 | Oktavia Nur Rahmadani | Aturan Penomoran dan Penamaan; Referensi; Activity Diagram. |
+Petunjuk instalasi dan penggunaan akan diperbarui sesuai perkembangan proyek.
