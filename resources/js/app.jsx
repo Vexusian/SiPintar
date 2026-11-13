@@ -5,12 +5,20 @@ import Dashboard from './pages/Dashboard';
 import InputNilai from './pages/InputNilai';
 import UpdateNilai from './pages/UpdateNilai';
 
-function App() {
+function App({ defaultPage }) {
     // Navigasi halaman: 'login' | 'dashboard' | 'tambah' | 'edit'
-    const [currentPage, setCurrentPage] = useState('login');
-    const [user, setUser] = useState(null);
+    // Mendukung direct URL load maupun SPA navigation
+    const [currentPage, setCurrentPage] = useState(() => {
+        if (defaultPage) return defaultPage;
+        const path = window.location.pathname;
+        if (path.includes('/dashboard')) return 'dashboard';
+        if (path.includes('/nilai/tambah')) return 'tambah';
+        if (path.includes('/nilai/edit')) return 'edit';
+        return 'login';
+    });
+
+    const [user, setUser] = useState({ nama_guru: 'Guru Pengampu', username: 'guru' });
     const [selectedMapel, setSelectedMapel] = useState(1);
-    const [activeSiswa, setActiveSiswa] = useState(null);
 
     // Initial dummy data sesuai Kamus Data dan Wireframe UI-002
     const [siswaList, setSiswaList] = useState([
@@ -20,6 +28,15 @@ function App() {
         { id_siswa: 1, nis: 'S-001', nama_siswa: 'Siswa 1', id_mapel: 2, nama_mapel: 'Bahasa Indonesia', nilai: 78.50 },
         { id_siswa: 2, nis: 'S-002', nama_siswa: 'Siswa 2', id_mapel: 2, nama_mapel: 'Bahasa Indonesia', nilai: null },
     ]);
+
+    // Data siswa aktif untuk form tambah / edit
+    const [activeSiswa, setActiveSiswa] = useState(() => {
+        const path = window.location.pathname;
+        if (defaultPage === 'edit' || path.includes('/nilai/edit')) {
+            return { id_siswa: 2, nis: 'S-002', nama_siswa: 'Siswa 2', id_mapel: 1, nama_mapel: 'Matematika', nilai: 82.00 };
+        }
+        return { id_siswa: 1, nis: 'S-001', nama_siswa: 'Siswa 1', id_mapel: 1, nama_mapel: 'Matematika', nilai: null };
+    });
 
     // Handle Login
     const handleLoginSuccess = (userData) => {
@@ -108,5 +125,6 @@ function App() {
 
 const rootElement = document.getElementById('root');
 if (rootElement) {
-    createRoot(rootElement).render(<App />);
+    const page = rootElement.dataset.page;
+    createRoot(rootElement).render(<App defaultPage={page} />);
 }
