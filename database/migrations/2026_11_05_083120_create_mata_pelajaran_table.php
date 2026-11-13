@@ -13,7 +13,7 @@ return new class extends Migration
             $table->increments('id_mapel');
             $table->string('nama_mapel', 50);
 
-            $table->unsignedInteger('id_guru');
+            $table->unsignedBigInteger('id_guru');
 
             // Foreign Key
             $table->foreign('id_guru')
