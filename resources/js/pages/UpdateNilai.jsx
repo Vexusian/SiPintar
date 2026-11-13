@@ -1,108 +1,215 @@
-import React, { useState } from 'react';
 
-export default function UpdateNilai({ user, siswaData, onUpdate, onCancel }) {
+import React, { useState, useEffect } from 'react';
+
+export default function UpdateNilai({
+    user,
+    siswaData,
+    onUpdate,
+    onCancel
+}) {
     const [nilai, setNilai] = useState(siswaData?.nilai ?? '');
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        setNilai(siswaData?.nilai ?? '');
+        setErrorMessage('');
+    }, [siswaData]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrorMessage('');
 
-        const numericNilai = parseFloat(nilai);
-        if (isNaN(numericNilai) || numericNilai < 0 || numericNilai > 100) {
-            setErrorMessage('Nilai harus berupa angka antara 0 sampai 100.');
+        const numericNilai = Number(nilai);
+
+        if (
+            nilai === '' ||
+            !Number.isFinite(numericNilai) ||
+            numericNilai < 0 ||
+            numericNilai > 100
+        ) {
+            setErrorMessage(
+                'Nilai harus berupa angka antara 0 sampai 100.'
+            );
             return;
         }
 
         setLoading(true);
+
         try {
-            // Memanggil callback onUpdate
-            await onUpdate(siswaData.id_siswa, siswaData.id_mapel, numericNilai);
-        } catch (err) {
-            setErrorMessage('Gagal memperbarui nilai. Silakan coba kembali.');
+            await onUpdate(
+                siswaData.id_siswa,
+                siswaData.id_mapel,
+                numericNilai
+            );
+        } catch (error) {
+            setErrorMessage(
+                'Gagal memperbarui nilai. Silakan coba kembali.'
+            );
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col">
-            {/* Header */}
-            <header className="bg-slate-800 text-white px-6 py-3 flex items-center justify-between shadow-sm">
-                <div className="flex items-center space-x-3">
-                    <span className="font-bold text-lg tracking-wide">SiPintar</span>
-                    <span className="text-xs text-slate-300 hidden md:inline">Sistem Informasi Akademik Sekolah</span>
+        <div
+            className="min-h-screen flex flex-col bg-[#F1F4F6] text-[#354454]"
+            style={{
+                fontFamily: 'Arial, Helvetica, sans-serif',
+                fontWeight: 400
+            }}
+        >
+            {/* HEADER */}
+            <header className="h-[44px] shrink-0 bg-[#193D57] text-white flex items-center justify-between px-[24px]">
+
+                <div className="flex items-center gap-[20px]">
+                    <span className="text-[16px] font-bold tracking-normal">
+                        SiPintar
+                    </span>
+
+                    <span className="text-[10px] font-normal">
+                        Sistem Informasi Akademik Sekolah
+                    </span>
                 </div>
-                <div className="text-xs text-slate-300">
-                    Guru | {user?.nama_guru || 'Profil'}
+
+                <div className="text-[12px] font-bold">
+                    Guru | Profil
                 </div>
+
             </header>
 
-            <main className="flex-1 p-6 md:p-8">
-                <div className="max-w-2xl mx-auto">
-                    {/* Breadcrumbs */}
-                    <div className="mb-4">
-                        <h1 className="text-xl font-bold text-slate-800">Edit Nilai</h1>
-                        <p className="text-xs text-slate-500 mt-1">Data Siswa dan Mata Pelajaran / Edit Nilai</p>
-                    </div>
+            {/* LAYOUT */}
+            <div className="flex flex-1">
 
-                    {errorMessage && (
-                        <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-xs">
-                            {errorMessage}
+                {/* SIDEBAR */}
+                <aside className="w-[170px] shrink-0 bg-[#F8FAFB] border-r border-[#CED8DF] px-[20px] pt-[18px]">
+
+                    <p className="text-[10px] font-bold text-[#607386] mb-[17px]">
+                        MENU UTAMA
+                    </p>
+
+                    <p className="text-[12px] font-normal text-[#354454]">
+                        Data Siswa &amp; Mapel
+                    </p>
+
+                </aside>
+
+                {/* MAIN CONTENT */}
+                <main className="flex-1 px-[24px] pt-[10px]">
+
+                    <div className="max-w-[850px] mx-auto">
+
+                        {/* IDENTITAS HALAMAN */}
+                        <div className="mb-[18px]">
+
+                            <span className="inline-flex items-center h-[22px] px-[10px] border border-[#7CA9C2] bg-[#EAF2F6] rounded-[5px] text-[11px] font-normal text-[#193D57]">
+                                UI-004
+                            </span>
+
+                            <h1 className="text-[21px] font-bold text-[#193D57] mt-[7px]">
+                                Edit Nilai
+                            </h1>
+
+                            <p className="text-[11px] font-normal text-[#75899A] mt-[5px]">
+                                Data Siswa dan Mata Pelajaran / Edit Nilai
+                            </p>
+
                         </div>
-                    )}
 
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-4 border-b border-slate-100 text-sm">
-                                <div>
-                                    <span className="text-xs text-slate-400 block">Siswa:</span>
-                                    <span className="font-semibold text-slate-800">{siswaData?.nama_siswa}</span>
-                                    <span className="text-xs text-slate-500 block font-mono">NIS: {siswaData?.nis}</span>
+                        {/* PESAN GAGAL */}
+                        {errorMessage && (
+                            <div
+                                role="alert"
+                                className="ml-[36px] mb-[12px] max-w-[680px] rounded-[5px] border border-red-200 bg-red-50 px-[12px] py-[9px] text-[12px] font-normal text-red-600"
+                            >
+                                {errorMessage}
+                            </div>
+                        )}
+
+                        {/* KARTU FORM */}
+                        <section className="ml-[36px] w-full max-w-[680px] min-h-[301px] rounded-[11px] border border-[#C8D3DC] bg-white px-[30px] pt-[19px] pb-[28px] shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+
+                            <h2 className="text-[16px] font-bold text-[#193D57] mb-[13px]">
+                                Edit Nilai
+                            </h2>
+
+                            <form onSubmit={handleSubmit}>
+
+                                {/* INFORMASI SISWA */}
+                                <div className="grid grid-cols-2 border-b border-[#D4DDE4] pb-[11px] mb-[20px]">
+
+                                    <p className="text-[12px] font-bold text-[#263F52]">
+                                        Siswa: {siswaData?.nama_siswa || '-'}
+                                    </p>
+
+                                    <p className="text-[12px] font-bold text-[#263F52]">
+                                        Mata Pelajaran: {siswaData?.nama_mapel || '-'}
+                                    </p>
+
                                 </div>
-                                <div>
-                                    <span className="text-xs text-slate-400 block">Mata Pelajaran:</span>
-                                    <span className="font-semibold text-slate-800">{siswaData?.nama_mapel}</span>
+
+                                {/* INPUT NILAI */}
+                                <div className="mb-[39px]">
+
+                                    <label
+                                        htmlFor="nilai"
+                                        className="block text-[12px] font-bold text-[#263F52] mb-[6px]"
+                                    >
+                                        Nilai
+                                    </label>
+
+                                    <input
+                                        id="nilai"
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        step="0.01"
+                                        required
+                                        value={nilai}
+                                        onChange={(e) => {
+                                            setNilai(e.target.value);
+                                            setErrorMessage('');
+                                        }}
+                                        placeholder="Masukkan nilai"
+                                        className="w-full h-[31px] rounded-[6px] border border-[#BFCBD5] bg-white px-[10px] text-[12px] font-normal text-[#263F52] outline-none focus:border-[#39799E] focus:ring-1 focus:ring-[#D5E7F1]"
+                                    />
+
+                                    <p className="text-[10px] font-normal text-[#8293A1] mt-[3px]">
+                                        Masukkan satu nilai untuk siswa ini.
+                                    </p>
+
                                 </div>
-                            </div>
 
-                            <div>
-                                <label className="block text-xs font-medium text-slate-700 mb-1">Nilai</label>
-                                <input
-                                    type="number"
-                                    step="0.01"
-                                    min="0"
-                                    max="100"
-                                    required
-                                    placeholder="Masukkan nilai baru"
-                                    value={nilai}
-                                    onChange={(e) => setNilai(e.target.value)}
-                                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                                />
-                                <p className="text-[11px] text-slate-400 mt-1">Masukkan satu nilai untuk siswa ini.</p>
-                            </div>
+                                {/* TOMBOL */}
+                                <div className="flex items-center gap-[17px]">
 
-                            <div className="flex items-center gap-3 pt-2">
-                                <button
-                                    type="submit"
-                                    disabled={loading}
-                                    className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-sm transition disabled:opacity-50"
-                                >
-                                    {loading ? 'Menyimpan...' : 'Simpan Perubahan'}
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={onCancel}
-                                    className="px-5 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold rounded-lg transition"
-                                >
-                                    Batal
-                                </button>
-                            </div>
-                        </form>
+                                    <button
+                                        type="submit"
+                                        disabled={loading}
+                                        className="w-[198px] h-[35px] rounded-[6px] bg-[#306F91] text-white text-[12px] font-bold hover:bg-[#275E7C] transition disabled:opacity-50"
+                                    >
+                                        {loading
+                                            ? 'Menyimpan...'
+                                            : 'Simpan Perubahan'}
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={onCancel}
+                                        disabled={loading}
+                                        className="w-[130px] h-[35px] rounded-[6px] border-2 border-[#C3D0DA] bg-white text-[#193D57] text-[12px] font-bold hover:bg-[#F3F6F8] transition"
+                                    >
+                                        Batal
+                                    </button>
+
+                                </div>
+
+                            </form>
+                        </section>
+
                     </div>
-                </div>
-            </main>
+                </main>
+            </div>
         </div>
     );
 }
